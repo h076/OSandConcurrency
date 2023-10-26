@@ -3,6 +3,15 @@
 #include <stdio.h>
 #include <unistd.h>
 
+void example();
+void task1(int);
+
+int main(int argc, char **argv) {
+    if(argc == 2) {
+        task1(atoi(argv[1]));
+    }
+}
+
 void example() {
     pid_t pid = 0;
     // fork will create a child process, copy of the parent
@@ -22,16 +31,9 @@ void example() {
 }
 
 void task1(int NUMBER_OF_PROCESSES) {
+    printf("%d\n", NUMBER_OF_PROCESSES);
     for(int i=0; i<NUMBER_OF_PROCESSES; i++) {
         fork();
-        printf("instance %d, my PID is %d", i, getpid());
+        printf("instance %d, my PID is %d\n", i, getpid());
     }
-}
-
-int main(int argc, char *argv[]) {
-    example();
-    if(argc>1) {
-        task1((int) *(argv+1));
-    }
-    return 0;
 }
