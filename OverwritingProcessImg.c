@@ -28,7 +28,7 @@ void task(int NUMBER_OF_PROCESSES) {
     printf("%d\n", NUMBER_OF_PROCESSES);
     for(int i=0; i<NUMBER_OF_PROCESSES; i++) {
         fork();
-        execl("/bin/ps", "ps -1", "1", 0);
+        execl("/bin/ps", "ps", "1", -1);
         printf("instance %d, my PID is %d\n", i, getpid());
     }
 }
