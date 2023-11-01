@@ -11,21 +11,23 @@
 long int getDifferenceInMilliSeconds(struct timeval start, struct timeval end);
 long int getDifferenceInMicroSeconds(struct timeval start, struct timeval end);
 void example();
-void task();
+void task4();
+void task5();
 
 int main(int argc, char **argv) {
-    task();
+    task5();
     return 0;
 }
 
 // determine the time taken to fork the process and running it
-void task() {
+void task4() {
     int status;
     pid_t pid;
     struct timeval startTime, currentTime;
-    //printf("Hello from the parent process\n");
+
     gettimeofday(&startTime, NULL);
     for(int i=0; i<NUM_OF_PROCESSES; i++) {
+        //gettimeofday(&startTime, NULL);
         pid=fork();
         gettimeofday(&currentTime, NULL);
         int time = getDifferenceInMicroSeconds(startTime, currentTime);
@@ -40,6 +42,29 @@ void task() {
         //waitpid(pid, &status, WUNTRACED);
     }
     waitpid(pid, &status, WUNTRACED);
+    printf("Bye from the parent!\n");
+    return;
+}
+
+
+void task5() {
+    int status;
+    pid_t pid;
+    struct timeval baseTime, currentTime;
+    long int times[NUM_OF_PROCESSES];
+    //printf("Hello from the parent process\n");
+    while(1) {
+        gettimeofday(&baseTime, NULL);
+        for(int i=0; i<NUM_OF_PROCESSES; i++) {
+            pid=fork();
+            gettimeofday(&currentTime, NULL);
+            times[i] = getDifferenceInMilliSeconds(baseTime, currentTime);
+        }
+        for(int i=0; i<NUM_OF_PROCESSES; i++) {
+            printf(" %d : %ld", i, times[i]);
+        }
+        printf("\n");
+    }
     printf("Bye from the parent!\n");
     return;
 }
